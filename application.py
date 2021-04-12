@@ -25,8 +25,8 @@ db = SQLAlchemy(application)
 global client_id
 global client_secret
 
-client_id = "944192166351-mvbb31djqrrj3pttlh3cjcj6sro3k55l.apps.googleusercontent.com"
-client_secret = "89c95fVwjI_wBgMteP4gY-or"
+client_id = "your-client-id"
+client_secret = "your-secret-key"
 
 
 
