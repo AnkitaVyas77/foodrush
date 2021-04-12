@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Rush</title>
+<link rel= "stylesheet" href= "{{ url_for('static',filename='css/style.css') }}"/>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+     
+
+    <!-- Boot Strap css Links -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- JQuery links  -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- Handel Barjs -->
+    <script src="https://twitter.github.io/typeahead.js/js/handlebars.js"></script>
+
+
+    <!-- Font ASUM-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+
+</head>
+<body class="bg1">
+
+    <div id="nav-content"></div>
+    
+{% raw %}
+
+    <script id="nav-template" type="text/x-handlebars-template">
+        <nav class="navbar navbar-expand-lg navbar-light bg-black">
+
+            {{#if_cond this.flag '==' 'True'}}
+                <a class="navbar-brand" style="color: #F5F5F5;"><h3>Hi {{this.user}}</h3></a>
+            {{/if_cond}}
+
+            {{#if_cond this.flag '==' 'False'}}
+                <a class="navbar-brand" style="color: #F5F5F5;" ><h3>Hi Guest</h3> </a>
+            {{/if_cond}}
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+
+                    
+
+                    {{#if_cond this.flag '==' 'False'}}
+                        <li id="login-gin" class="nav-item">
+                            <a class="nav-link bgnav" href="/" style="color: #F5F5F5;"><h3>LogIn</h3> </a>
+                        </li>
+                    {{/if_cond}}
+
+                    {{#if_cond this.flag '==' 'True'}}
+			<li class="nav-item active">
+                        	<a class="nav-link bgnav" href="/post" style="color: #F5F5F5;"><h3>Post </h3><span class="sr-only">(current)</span></a>
+                    	</li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href='/updatepost' style="color: #F5F5F5;"><h3>Update</h3></a>
+                        </li>
+                        
+                        <li class="nav-item">
+                            <a class="nav-link bgnav" href="/logout" style="color: #F5F5F5;"><h3>Sign Out</h3></a>
+                        </li>
+                    {{/if_cond}}
+
+                </ul>
+            </div>
+        </nav>
+    </script>
+{% endraw %}
+
+<script>
+    $( document ).ready(function() {
+
+        var data = {
+            flag : "{{flag}}",
+            user:"{{user}}",
+        }
+        console.log(data)
+
+        templateScript = Handlebars.compile($('#nav-template').html());
+        $("#nav-content").html(templateScript(data));
+    });
+
+
+    Handlebars.registerHelper('if_cond', function (v1, operator, v2, options) {
+        switch (operator) {
+            case '==':
+                return (v1 == v2) ? options.fn(this) : options.inverse(this);
+            case '===':
+                return (v1 === v2) ? options.fn(this) : options.inverse(this);
+            case '!=':
+                return (v1 != v2) ? options.fn(this) : options.inverse(this);
+            case '!==':
+                return (v1 !== v2) ? options.fn(this) : options.inverse(this);
+            case '<':
+                return (v1 < v2) ? options.fn(this) : options.inverse(this);
+            case '<=':
+                return (v1 <= v2) ? options.fn(this) : options.inverse(this);
+            case '>':
+                return (v1 > v2) ? options.fn(this) : options.inverse(this);
+            case '>=':
+                return (v1 >= v2) ? options.fn(this) : options.inverse(this);
+            case '&&':
+                return (v1 && v2) ? options.fn(this) : options.inverse(this);
+            case '||':
+                return (v1 || v2) ? options.fn(this) : options.inverse(this);
+            default:
+                return options.inverse(this);
+        }
+    });
+
+</script>
+<br><br>
+<div class="bg-contact2" >
+	<div class="container-contact2">
+		<div class="wrap-contact2">
+
+
+		<form name="addForm" class="contact2-form" id="addForm" action="{{ url_for( 'addpost') }}" method="POST" enctype="application/json">
+
+				{% for message in get_flashed_messages() %}
+    					<div class="alert alert-warning">
+        				<button type="button" class="close" data-dismiss="alert">&times;</button>
+        				{{ message }}
+   					</div>
+    				{% endfor %}
+
+					<div class="wrap-input2 validate-input" data-validate="Name is required">
+						<input required class="input2" type="text" name="caption">
+						<span class="focus-input2" data-placeholder="CAPTION"></span>
+					</div>
+
+					<div class="wrap-input2 validate-input" data-validate = "Valid url is required">
+						<input required class="input2" type="url" name="url">
+						<span class="focus-input2" data-placeholder="Image URL"></span>
+					</div>
+
+					
+
+					<div class="container-contact2-form-btn">
+						<div class="wrap-contact2-form-btn">
+							<div class="contact2-form-bgbtn"></div>
+							<button class="contact2-form-btn">
+								Post Your Dish
+							</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+
+<br><br></div>
+<div class="containerhead">
+	<h1>Food Rush</h1>
+</div>
+
+<br><br>
+
+ 
+{% for post in posts %}
+
+<div class="container1"> 
+  
+    
+<div class="row vr-gallery">
+                <div class="col-md-8 mb-4">
+                    <div class="row">
+                        <div class="col-md-12 col-lg-7 pr-0 pd-md">
+                            <img src="{{ post.url }}" class="urlimg">
+                        </div>
+
+
+                        <div class="col-md-12 col-lg-5 light-bg cus-pd cus-arrow-left">				 
+                            <p><small>{{ post.date_posted }}  </small></p>
+                            <img src="{{ post.userimg }}" alt="Avatar" class="icon" ><h4>{{ post.name }}  </h4>
+                            <p>
+                                <h3>{{ post.caption }}  </h3>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+</div>
+
+
+</div>
+{% endfor %}
+
+
+
+
+
+
+</body>
+</html>
